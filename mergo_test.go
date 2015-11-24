@@ -6,11 +6,12 @@
 package mergo
 
 import (
-	"gopkg.in/yaml.v1"
 	"io/ioutil"
 	"reflect"
 	"testing"
 	"time"
+
+	"gopkg.in/yaml.v1"
 )
 
 type simpleTest struct {
@@ -231,15 +232,12 @@ func TestSliceStruct(t *testing.T) {
 	}
 
 	a = sliceTest{[]int{1}}
-	b = sliceTest{[]int{1, 2, 3}}
+	b = sliceTest{[]int{2, 3, 4}}
 	if err := Merge(&a, b); err != nil {
 		t.FailNow()
 	}
-	if len(a.S) != 1 {
+	if len(a.S) != 4 {
 		t.FailNow()
-	}
-	if len(a.S) == len(b.S) {
-		t.Fatalf("b merged unexpectedly %d != %d", len(a.S), len(b.S))
 	}
 }
 

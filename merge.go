@@ -81,6 +81,16 @@ func deepMerge(dst, src reflect.Value, visited map[uintptr]*visit, depth int, ov
 		} else if err = deepMerge(dst.Elem(), src.Elem(), visited, depth+1, overwrite); err != nil {
 			return
 		}
+	case reflect.Slice:
+		if dst.CanSet() && !isEmptyValue(src) {
+			if isEmptyValue(dst) {
+				dst.Set(src)
+			} else {
+				for i := 0; i < src.Len(); i++ {
+					dst.Set(reflect.Append(dst, src.Index(i)))
+				}
+			}
+		}
 	default:
 		if dst.CanSet() && !isEmptyValue(src) && (overwrite || isEmptyValue(dst)) {
 			dst.Set(src)
