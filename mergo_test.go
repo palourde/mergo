@@ -6,6 +6,7 @@
 package mergo
 
 import (
+	"fmt"
 	"io/ioutil"
 	"reflect"
 	"testing"
@@ -36,6 +37,7 @@ type pointerTest struct {
 
 type sliceTest struct {
 	S []int
+	M []map[string]string
 }
 
 func TestKb(t *testing.T) {
@@ -220,7 +222,7 @@ func TestPointerStructNil(t *testing.T) {
 
 func TestSliceStruct(t *testing.T) {
 	a := sliceTest{}
-	b := sliceTest{[]int{1, 2, 3}}
+	b := sliceTest{S: []int{1, 2, 3}}
 	if err := Merge(&a, b); err != nil {
 		t.FailNow()
 	}
@@ -231,12 +233,53 @@ func TestSliceStruct(t *testing.T) {
 		t.Fatalf("b not merged in a proper way %d != %d", len(a.S), len(b.S))
 	}
 
-	a = sliceTest{[]int{1}}
-	b = sliceTest{[]int{2, 3, 4}}
+	a = sliceTest{S: []int{1}}
+	b = sliceTest{S: []int{2, 3, 4}}
 	if err := Merge(&a, b); err != nil {
 		t.FailNow()
 	}
 	if len(a.S) != 4 {
+		t.FailNow()
+	}
+
+	a = sliceTest{S: []int{1}}
+	b = sliceTest{S: []int{1, 2, 3, 4}}
+	if err := Merge(&a, b); err != nil {
+		t.FailNow()
+	}
+	if len(a.S) != 4 {
+		t.FailNow()
+	}
+
+	c := sliceTest{M: []map[string]string{
+		map[string]string{"foo": "bar"},
+		map[string]string{"baz": "qux"},
+	}}
+	d := sliceTest{M: []map[string]string{
+		map[string]string{"foo": "qux"},
+	}}
+	if err := Merge(&c, d); err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	if len(c.M) != 3 {
+		fmt.Println(a)
+		t.FailNow()
+	}
+
+	c = sliceTest{M: []map[string]string{
+		map[string]string{"foo": "bar"},
+		map[string]string{"baz": "qux"},
+	}}
+	d = sliceTest{M: []map[string]string{
+		map[string]string{"foo": "bar"},
+	}}
+	if err := Merge(&c, d); err != nil {
+		fmt.Println(err)
+		t.FailNow()
+	}
+	if len(c.M) != 2 {
+		fmt.Println(a)
 		t.FailNow()
 	}
 }

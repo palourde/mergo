@@ -8,9 +8,7 @@
 
 package mergo
 
-import (
-	"reflect"
-)
+import "reflect"
 
 // Traverses recursively both values, assigning src's fields values to dst.
 // The map argument tracks comparisons that have already been seen, which allows
@@ -87,7 +85,10 @@ func deepMerge(dst, src reflect.Value, visited map[uintptr]*visit, depth int, ov
 				dst.Set(src)
 			} else {
 				for i := 0; i < src.Len(); i++ {
-					dst.Set(reflect.Append(dst, src.Index(i)))
+					exists := contains(dst, src.Index(i).Interface())
+					if !exists {
+						dst.Set(reflect.Append(dst, src.Index(i)))
+					}
 				}
 			}
 		}

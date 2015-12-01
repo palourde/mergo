@@ -32,6 +32,15 @@ type visit struct {
 	next *visit
 }
 
+func contains(s reflect.Value, e interface{}) bool {
+	for i := 0; i < s.Len(); i++ {
+		if reflect.DeepEqual(s.Index(i).Interface(), e) {
+			return true
+		}
+	}
+	return false
+}
+
 // From src/pkg/encoding/json.
 func isEmptyValue(v reflect.Value) bool {
 	switch v.Kind() {
