@@ -4,7 +4,7 @@ A helper to merge structs and maps in Golang. Useful for configuration default v
 
 Also a lovely [comune](http://en.wikipedia.org/wiki/Mergo) (municipality) in the Province of Ancona in the Italian region Marche.
 
-![Mergo dall'alto](http://www.comune.mergo.an.it/Siti/Mergo/Immagini/Foto/mergo_dall_alto.jpg)
+![Mergo dall'alto](http://comune.mergo.an.it/c042024/images/mergo%20dall_alto_1.jpg)
 
 ## Status
 
@@ -44,6 +44,7 @@ If you were using Mergo **before** April 6th 2015, please check your project wor
 - [thoas/picfit](https://github.com/thoas/picfit)
 - [mantasmatelis/whooplist-server](https://github.com/mantasmatelis/whooplist-server)
 - [jnuthong/item_search](https://github.com/jnuthong/item_search)
+- [sensu/uchiwa](https://github.com/sensu/uchiwa)
 
 ## Installation
 
